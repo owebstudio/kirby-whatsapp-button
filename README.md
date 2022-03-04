@@ -61,6 +61,9 @@ return [
 ### Conditional button
 
 ```php
+<?php
+
+// /site/config/config.php
 return [
     'debug' => true,
     'clicktonext.whatsapp-button' => [
@@ -76,6 +79,9 @@ return [
 ### Multiple messages
 
 ```php
+<?php
+
+// /site/config/config.php
 return [
     'debug' => true,
     'clicktonext.whatsapp-button' => [
