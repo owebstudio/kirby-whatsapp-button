@@ -1,0 +1,40 @@
+{
+  "name": "clicktonext/kirby-whatsapp-button",
+  "description": "Simple floating WhatsApp button plugin for Kirby 3.",
+  "type": "kirby-plugin",
+  "version": "1.0.0",
+  "license": "MIT",
+  "keywords": [
+    "clicktonext",
+    "kirby",
+    "kirby-3",
+    "kirby3-plugin",
+    "kirby-plugin",
+    "kirby-whatsapp"
+  ],
+  "homepage": "https://clicktonext.com",
+  "support": {
+    "email": "support@clicktonext.com"
+  },
+  "authors": [
+    {
+      "name": "Click to Next",
+      "email": "contact@clicktonext.com",
+      "homepage": "https://clicktonext.com"
+    }
+  ],
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "require": {
+    "php": "^7.4|^8.0",
+    "getkirby/composer-installer": "^1.2"
+  },
+  "extra": {
+    "installer-name": "kirby-whatsapp-button"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

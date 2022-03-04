@@ -1,0 +1,5 @@
+.gitattributes export-ignore
+.gitignore export-ignore
+preview.png export-ignore
+src export-ignore
+scss export-ignore

@@ -1,0 +1,51 @@
+{
+  "name": "kirby-whatsapp-button",
+  "description": "Simple floating WhatsApp button plugin for Kirby 3.",
+  "version": "1.0.0",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development gulp",
+    "clean": "gulp clean",
+    "dev": "npm run clean && npm run start",
+    "build": "cross-env NODE_ENV=production gulp build"
+  },
+  "author": {
+    "name": "Click to Next",
+    "email": "support@clicktonext.com",
+    "url": "https://clicktonext.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:clicktonext/kirby-whatsapp-button.git"
+  },
+  "homepage": "https://github.com/clicktonext/kirby-whatsapp-button",
+  "posthtml": {
+    "recognizeSelfClosing": true
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "cross-env": "^7.0.3",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-header": "^2.0.9",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^9.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.0.0",
+    "gulp-uglify": "^3.0.2",
+    "node-sass": "^7.0.1",
+    "postcss": "^8.4.7"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 5%"
+  ],
+  "files": [
+    "assets/{css,js}/*.{css,js,map}",
+    "src/*.js",
+    "scss/*.scss"
+  ]
+}
