@@ -1,7 +1,7 @@
 {
   "name": "kirby-whatsapp-button",
   "description": "Simple floating WhatsApp button plugin for Kirby 3.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "gulpfile.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development gulp",
@@ -9,17 +9,13 @@
     "dev": "npm run clean && npm run start",
     "build": "cross-env NODE_ENV=production gulp build"
   },
-  "author": {
-    "name": "Click to Next",
-    "email": "support@clicktonext.com",
-    "url": "https://clicktonext.com"
-  },
+  "author": "Kirby Next <contact@kirbynext.com> (https://kirbynext.com)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:clicktonext/kirby-whatsapp-button.git"
+    "url": "git@github.com:kirbynext/kirby-whatsapp-button.git"
   },
-  "homepage": "https://github.com/clicktonext/kirby-whatsapp-button",
+  "homepage": "https://github.com/kirbynext/kirby-whatsapp-button",
   "posthtml": {
     "recognizeSelfClosing": true
   },

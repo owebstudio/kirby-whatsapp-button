@@ -43,7 +43,7 @@ The default values of the package are:
 | placeholder   | string            | Type here...                | Placeholder of input in the chat window                                 |
 | defaultMessage   | string            | Hello                       | Text to be sent to WhatsApp API if user leaves input blank              |
 
-All the values can be updated in the `config.php` file and prefixed with `clicktonext.whatsapp-button.`
+All the values can be updated in the `config.php` file and prefixed with `kirbynext.whatsapp-button.`
 
 ## Sample options
 
@@ -52,7 +52,7 @@ All the values can be updated in the `config.php` file and prefixed with `clickt
 
 // /site/config/config.php
 return [
-    'clicktonext.whatsapp-button' => [
+    'kirbynext.whatsapp-button' => [
         'phone' => '4912345678',
     ]
 ];
@@ -66,7 +66,7 @@ return [
 // /site/config/config.php
 return [
     'debug' => true,
-    'clicktonext.whatsapp-button' => [
+    'kirbynext.whatsapp-button' => [
         'phone' => '4912345678',
         'enabled' => function () {
             // enabled only weekdays and 08:00-17:00
@@ -84,7 +84,7 @@ return [
 // /site/config/config.php
 return [
     'debug' => true,
-    'clicktonext.whatsapp-button' => [
+    'kirbynext.whatsapp-button' => [
         'phone' => '4912345678',
         'messages' => [
             'Welcome to our site!', 
@@ -98,9 +98,9 @@ return [
 
 ```php
 <?php 
-    snippet('whatsapp-button', [
+    snippet('whatsapp-button', ['options' => [
         'name' => 'John Doe', 
         'phone' => '4912345678'
-    ]) 
+    ]]) 
 ?>
 ```

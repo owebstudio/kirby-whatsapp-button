@@ -1,7 +1,7 @@
 <?php
 
 // overwrite to default options
-$whatsappButtonOptions = array_replace(option('clicktonext.whatsapp-button', []), $options ?? []);
+$whatsappButtonOptions = array_replace(option('kirbynext.whatsapp-button', []), $options ?? []);
 array_filter($whatsappButtonOptions, function ($value) {
     return $value !== null;
 });
@@ -16,8 +16,8 @@ if (is_a($whatsappButtonEnabled, 'Closure') === true) {
 <?php if ($whatsappButtonEnabled === true && empty($whatsappButtonOptions['phone']) === false): ?>
     <div id="whatsapp-button"></div>
 
-    <?= css('media/plugins/clicktonext/whatsapp-button/css/whatsappButton.min.css') ?>
-    <?= js('media/plugins/clicktonext/whatsapp-button/js/whatsappButton.min.js') ?>
+    <?= css('media/plugins/kirbynext/whatsapp-button/css/whatsappButton.min.css') ?>
+    <?= js('media/plugins/kirbynext/whatsapp-button/js/whatsappButton.min.js') ?>
 
     <script>
         new WhatsappButton("whatsapp-button", <?= json_encode($whatsappButtonOptions) ?>).init();

@@ -2,7 +2,7 @@
 
 use Kirby\Cms\App as Kirby;
 
-Kirby::plugin('clicktonext/whatsapp-button', [
+Kirby::plugin('kirbynext/whatsapp-button', [
     'options' => [
         'enabled' => true,
         'phone' => '',

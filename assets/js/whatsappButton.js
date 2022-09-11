@@ -1,4 +1,4 @@
-/*! kirby-whatsapp-button v1.0.0 | MIT License | https://github.com/clicktonext/kirby-whatsapp-button */
+/*! kirby-whatsapp-button v1.0.1 | MIT License | https://github.com/kirbynext/kirby-whatsapp-button */
 let WhatsappButton = function (id, options) {
   this.elm = document.getElementById(id);
   this.options = options;
