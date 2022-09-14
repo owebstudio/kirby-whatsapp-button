@@ -9,13 +9,13 @@
     "dev": "npm run clean && npm run start",
     "build": "cross-env NODE_ENV=production gulp build"
   },
-  "author": "Kirby Next <contact@kirbynext.com> (https://kirbynext.com)",
+  "author": "oweb studio <contact@owebstudio.com> (https://owebstudio.com)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:kirbynext/kirby-whatsapp-button.git"
+    "url": "git@github.com:owebstudio/kirby-whatsapp-button.git"
   },
-  "homepage": "https://github.com/kirbynext/kirby-whatsapp-button",
+  "homepage": "https://github.com/owebstudio/kirby-whatsapp-button",
   "posthtml": {
     "recognizeSelfClosing": true
   },

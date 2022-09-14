@@ -2,7 +2,7 @@
 
 use Kirby\Cms\App as Kirby;
 
-Kirby::plugin('kirbynext/whatsapp-button', [
+Kirby::plugin('owebstudio/whatsapp-button', [
     'options' => [
         'enabled' => true,
         'phone' => '',

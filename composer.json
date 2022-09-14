@@ -1,27 +1,27 @@
 {
-  "name": "kirbynext/kirby-whatsapp-button",
+  "name": "owebstudio/kirby-whatsapp-button",
   "description": "Simple floating WhatsApp button plugin for Kirby 3.",
   "type": "kirby-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "keywords": [
-    "kirbynext",
+    "owebstudio",
+    "owebstudio-plugin",
     "kirby",
     "kirby-3",
     "kirby3-plugin",
     "kirby-plugin",
-    "kirbynext-plugin",
     "kirby-whatsapp"
   ],
-  "homepage": "https://kirbynext.com",
+  "homepage": "https://owebstudio.com",
   "support": {
-    "email": "support@kirbynext.com"
+    "email": "support@owebstudio.com"
   },
   "authors": [
     {
-      "name": "Kirby Next",
-      "email": "contact@kirbynext.com",
-      "homepage": "https://kirbynext.com"
+      "name": "oweb studio",
+      "email": "contact@owebstudio.com",
+      "homepage": "https://owebstudio.com"
     }
   ],
   "config": {
