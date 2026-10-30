@@ -1,4 +1,4 @@
-/*! kirby-whatsapp-button v1.0.1 | MIT License | https://github.com/owebstudio/kirby-whatsapp-button */
+/*! kirby-whatsapp-button v1.0.3 | MIT License | https://github.com/owebstudio/kirby-whatsapp-button */
 let WhatsappButton = function (id, options) {
   this.elm = document.getElementById(id);
   this.options = options;
@@ -127,7 +127,7 @@ WhatsappButton.prototype = {
       // Append Unread Messages Badge
       let $toggleBadge = document.createElement("span");
       $toggleBadge.className = self.classes.toggleBadge;
-      $toggleBadge.innerHTML = self.config.countBadge;
+      $toggleBadge.textContent = self.config.countBadge;
       $toggleButton.appendChild($toggleBadge);
 
       setTimeout(function () {
@@ -194,14 +194,14 @@ WhatsappButton.prototype = {
     // Append User Name
     let $userName = document.createElement("strong");
     $userName.className = self.classes.userName;
-    $userName.innerHTML = self.config.name;
+    $userName.textContent = self.config.name;
     $userBody.appendChild($userName);
 
     // Append User Status
     if (self.config.showStatus) {
       let $userStatus = document.createElement("small");
       $userStatus.className = self.classes.userStatus;
-      $userStatus.innerHTML = self.config.status;
+      $userStatus.textContent = self.config.status;
 
       $userBody.appendChild($userStatus);
     }
@@ -224,14 +224,14 @@ WhatsappButton.prototype = {
         setTimeout(function () {
           let item = document.createElement("li");
           item.className = self.classes.messageListItem;
-          item.innerHTML = message;
+          item.textContent = message;
           $messageList.appendChild(item);
         }, 2000 * i);
       });
     } else {
       let item = document.createElement("li");
       item.className = self.classes.messageListItem;
-      item.innerHTML = self.config.messages;
+      item.textContent = self.config.messages;
       $messageList.appendChild(item);
     }
 
