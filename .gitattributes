@@ -4,3 +4,4 @@ gulpfile.js export-ignore
 preview.png export-ignore
 src export-ignore
 scss export-ignore
+/.github export-ignore

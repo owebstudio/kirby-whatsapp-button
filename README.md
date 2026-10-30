@@ -1,3 +1,5 @@
+![WhatsApp Button, a Kirby plugin by oweb studio. A floating WhatsApp chat button for your site.](.github/cover.png)
+
 # 💬 Kirby WhatsApp Button
 
 This is a very simple floating WhatsApp button plugin for Kirby.
