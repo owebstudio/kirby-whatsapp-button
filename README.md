@@ -1,8 +1,12 @@
 # 💬 Kirby WhatsApp Button
 
-This is a very simple floating WhatsApp button plugin for Kirby 3.
+This is a very simple floating WhatsApp button plugin for Kirby.
 
 ![preview](https://user-images.githubusercontent.com/3393422/156775716-75ccee3b-2d3c-4bce-9811-85f462d570a0.png)
+
+## Requirements
+
+- Kirby 3.4+, 4 or 5
 
 ## Installation
 
