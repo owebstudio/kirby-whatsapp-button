@@ -1,7 +1,7 @@
 {
   "name": "kirby-whatsapp-button",
   "description": "Simple floating WhatsApp button plugin for Kirby 3.",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "main": "gulpfile.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development gulp",
