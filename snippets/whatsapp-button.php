@@ -20,6 +20,6 @@ if (is_a($whatsappButtonEnabled, 'Closure') === true) {
     <?= js('media/plugins/owebstudio/whatsapp-button/js/whatsappButton.min.js') ?>
 
     <script>
-        new WhatsappButton("whatsapp-button", <?= json_encode($whatsappButtonOptions) ?>).init();
+        new WhatsappButton("whatsapp-button", <?= json_encode($whatsappButtonOptions, JSON_HEX_TAG) ?>).init();
     </script>
 <?php endif ?>
