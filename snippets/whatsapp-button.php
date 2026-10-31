@@ -16,8 +16,8 @@ if (is_a($whatsappButtonEnabled, 'Closure') === true) {
 <?php if ($whatsappButtonEnabled === true && empty($whatsappButtonOptions['phone']) === false): ?>
     <div id="whatsapp-button"></div>
 
-    <?= css('media/plugins/owebstudio/whatsapp-button/css/whatsappButton.min.css') ?>
-    <?= js('media/plugins/owebstudio/whatsapp-button/js/whatsappButton.min.js') ?>
+    <?= css('media/plugins/owebstudio/whatsapp-button/whatsapp-button.css') ?>
+    <?= js('media/plugins/owebstudio/whatsapp-button/whatsapp-button.js') ?>
 
     <script>
         new WhatsappButton("whatsapp-button", <?= json_encode($whatsappButtonOptions, JSON_HEX_TAG) ?>).init();
