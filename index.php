@@ -2,6 +2,10 @@
 
 use Kirby\Cms\App as Kirby;
 
+load([
+    'Owebstudio\\WhatsappButton\\WhatsappButton' => 'src/WhatsappButton.php'
+], __DIR__);
+
 Kirby::plugin('owebstudio/whatsapp-button', [
     'options' => [
         'enabled' => true,
@@ -15,15 +19,34 @@ Kirby::plugin('owebstudio/whatsapp-button', [
         'autoOpen' => true,
         'autoOpenTimeout' => 5000,
         'doNotDisturb' => false,
-        'name' => site()->title()->value(),
-        'avatar' => 'https://ui-avatars.com/api/?background=25D366&color=fff&name=' . rawurlencode(site()->title()->value()),
-        'status' => 'online',
+        'name' => null,
+        'avatar' => null,
+        'status' => null,
         'showStatus' => true,
-        'messages' => 'Hello, how can we help you?',
-        'placeholder' => 'Type here...',
-        'defaultMessage' => 'Hello',
+        'messages' => null,
+        'placeholder' => null,
+        'defaultMessage' => null,
+        'buttonLabel' => null,
+        'sendLabel' => null,
+        'backLabel' => null,
+        'agents' => [],
+        'hours' => [],
+        'timezone' => null,
+        'outsideHours' => 'offline',
+        'offlineStatus' => null,
+        'offlineMessages' => null,
+    ],
+    'blueprints' => [
+        'fields/whatsapp-button' => __DIR__ . '/blueprints/fields/whatsapp-button.yml',
+        'fields/whatsapp-button-hours' => __DIR__ . '/blueprints/fields/whatsapp-button-hours.yml',
+        'tabs/whatsapp-button' => __DIR__ . '/blueprints/tabs/whatsapp-button.yml'
     ],
     'snippets' => [
         'whatsapp-button' => __DIR__ . '/snippets/whatsapp-button.php'
+    ],
+    'translations' => [
+        'de' => require __DIR__ . '/translations/de.php',
+        'en' => require __DIR__ . '/translations/en.php',
+        'tr' => require __DIR__ . '/translations/tr.php'
     ]
 ]);

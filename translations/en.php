@@ -1,0 +1,33 @@
+<?php
+
+return [
+    'owebstudio.whatsapp-button.backLabel' => 'Back',
+    'owebstudio.whatsapp-button.buttonLabel' => 'Chat on WhatsApp',
+    'owebstudio.whatsapp-button.defaultMessage' => 'Hello',
+    'owebstudio.whatsapp-button.messages' => 'Hello, how can we help you?',
+    'owebstudio.whatsapp-button.offlineMessages' => 'We are away right now. Leave us a message and we will get back to you as soon as we can.',
+    'owebstudio.whatsapp-button.offlineStatus' => 'offline',
+    'owebstudio.whatsapp-button.panel.agents' => 'Agents',
+    'owebstudio.whatsapp-button.panel.agents.help' => 'With more than one agent, visitors choose who they want to chat with. Without agents, the phone number above is used.',
+    'owebstudio.whatsapp-button.panel.agents.hours.help' => 'Leave empty to use the office hours of the button.',
+    'owebstudio.whatsapp-button.panel.avatar' => 'Avatar',
+    'owebstudio.whatsapp-button.panel.days' => 'Days',
+    'owebstudio.whatsapp-button.panel.defaultMessage' => 'Default message',
+    'owebstudio.whatsapp-button.panel.defaultMessage.help' => 'Sent when the visitor leaves the input empty. The texts can contain page.title and page.url in double curly braces.',
+    'owebstudio.whatsapp-button.panel.enabled' => 'Show the WhatsApp button',
+    'owebstudio.whatsapp-button.panel.from' => 'From',
+    'owebstudio.whatsapp-button.panel.hours' => 'Office hours',
+    'owebstudio.whatsapp-button.panel.hours.help' => 'Without office hours, the button is always online.',
+    'owebstudio.whatsapp-button.panel.message' => 'Message',
+    'owebstudio.whatsapp-button.panel.messages' => 'Messages',
+    'owebstudio.whatsapp-button.panel.name' => 'Name',
+    'owebstudio.whatsapp-button.panel.offlineMessages' => 'Messages outside of office hours',
+    'owebstudio.whatsapp-button.panel.outsideHours' => 'Outside of office hours',
+    'owebstudio.whatsapp-button.panel.phone' => 'Phone number',
+    'owebstudio.whatsapp-button.panel.phone.help' => 'In international format, for example +49 30 1234567',
+    'owebstudio.whatsapp-button.panel.status' => 'Status',
+    'owebstudio.whatsapp-button.panel.to' => 'To',
+    'owebstudio.whatsapp-button.placeholder' => 'Type here...',
+    'owebstudio.whatsapp-button.sendLabel' => 'Send',
+    'owebstudio.whatsapp-button.status' => 'online'
+];

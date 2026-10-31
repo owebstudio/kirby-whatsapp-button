@@ -1,0 +1,33 @@
+<?php
+
+return [
+    'owebstudio.whatsapp-button.backLabel' => 'Geri',
+    'owebstudio.whatsapp-button.buttonLabel' => 'WhatsApp’tan yazın',
+    'owebstudio.whatsapp-button.defaultMessage' => 'Merhaba',
+    'owebstudio.whatsapp-button.messages' => 'Merhaba, size nasıl yardımcı olabiliriz?',
+    'owebstudio.whatsapp-button.offlineMessages' => 'Şu anda çevrimdışıyız. Mesajınızı bırakın, en kısa sürede size dönelim.',
+    'owebstudio.whatsapp-button.offlineStatus' => 'çevrimdışı',
+    'owebstudio.whatsapp-button.panel.agents' => 'Kişiler',
+    'owebstudio.whatsapp-button.panel.agents.help' => 'Birden fazla kişi varsa ziyaretçiler kiminle yazışacağını seçer. Kişi eklenmezse yukarıdaki telefon numarası kullanılır.',
+    'owebstudio.whatsapp-button.panel.agents.hours.help' => 'Butonun çalışma saatlerini kullanmak için boş bırakın.',
+    'owebstudio.whatsapp-button.panel.avatar' => 'Profil fotoğrafı',
+    'owebstudio.whatsapp-button.panel.days' => 'Günler',
+    'owebstudio.whatsapp-button.panel.defaultMessage' => 'Varsayılan mesaj',
+    'owebstudio.whatsapp-button.panel.defaultMessage.help' => 'Ziyaretçi alanı boş bırakırsa gönderilir. Metinlerde çift süslü parantez içinde page.title ve page.url kullanılabilir.',
+    'owebstudio.whatsapp-button.panel.enabled' => 'WhatsApp butonunu göster',
+    'owebstudio.whatsapp-button.panel.from' => 'Başlangıç',
+    'owebstudio.whatsapp-button.panel.hours' => 'Çalışma saatleri',
+    'owebstudio.whatsapp-button.panel.hours.help' => 'Çalışma saatleri girilmezse buton her zaman çevrimiçi görünür.',
+    'owebstudio.whatsapp-button.panel.message' => 'Mesaj',
+    'owebstudio.whatsapp-button.panel.messages' => 'Mesajlar',
+    'owebstudio.whatsapp-button.panel.name' => 'Ad',
+    'owebstudio.whatsapp-button.panel.offlineMessages' => 'Çalışma saatleri dışındaki mesajlar',
+    'owebstudio.whatsapp-button.panel.outsideHours' => 'Çalışma saatleri dışında',
+    'owebstudio.whatsapp-button.panel.phone' => 'Telefon numarası',
+    'owebstudio.whatsapp-button.panel.phone.help' => 'Uluslararası biçimde, örneğin +90 212 123 45 67',
+    'owebstudio.whatsapp-button.panel.status' => 'Durum',
+    'owebstudio.whatsapp-button.panel.to' => 'Bitiş',
+    'owebstudio.whatsapp-button.placeholder' => 'Mesajınızı yazın...',
+    'owebstudio.whatsapp-button.sendLabel' => 'Gönder',
+    'owebstudio.whatsapp-button.status' => 'çevrimiçi'
+];

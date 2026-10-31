@@ -1,25 +1,15 @@
 <?php
 
-// overwrite to default options
-$whatsappButtonOptions = array_replace(option('owebstudio.whatsapp-button', []), $options ?? []);
-array_filter($whatsappButtonOptions, function ($value) {
-    return $value !== null;
-});
+/**
+ * @var array|null $options Options that overwrite the plugin options
+ * @var \Kirby\Cms\Page|null $page
+ */
 
-// allow callable
-$whatsappButtonEnabled = $whatsappButtonOptions['enabled'] ?? true;
-if (is_a($whatsappButtonEnabled, 'Closure') === true) {
-    $whatsappButtonEnabled = $whatsappButtonEnabled($whatsappButtonOptions);
-}
+$whatsappButton = new Owebstudio\WhatsappButton\WhatsappButton(kirby(), $options ?? [], $page ?? null);
 ?>
+<?php if ($whatsappButton->isEnabled() === true): ?>
+    <div <?= attr(['class' => 'whatsappButton', 'data-whatsapp-button' => json_encode($whatsappButton->config())]) ?>></div>
 
-<?php if ($whatsappButtonEnabled === true && empty($whatsappButtonOptions['phone']) === false): ?>
-    <div id="whatsapp-button"></div>
-
-    <?= css('media/plugins/owebstudio/whatsapp-button/css/whatsappButton.min.css') ?>
-    <?= js('media/plugins/owebstudio/whatsapp-button/js/whatsappButton.min.js') ?>
-
-    <script>
-        new WhatsappButton("whatsapp-button", <?= json_encode($whatsappButtonOptions, JSON_HEX_TAG) ?>).init();
-    </script>
+    <?= css($whatsappButton->asset('whatsapp-button.css')) ?>
+    <?= js($whatsappButton->asset('whatsapp-button.js'), ['defer' => true]) ?>
 <?php endif ?>
