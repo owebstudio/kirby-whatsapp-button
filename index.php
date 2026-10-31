@@ -36,6 +36,11 @@ Kirby::plugin('owebstudio/whatsapp-button', [
         'offlineStatus' => null,
         'offlineMessages' => null,
     ],
+    'blueprints' => [
+        'fields/whatsapp-button' => __DIR__ . '/blueprints/fields/whatsapp-button.yml',
+        'fields/whatsapp-button-hours' => __DIR__ . '/blueprints/fields/whatsapp-button-hours.yml',
+        'tabs/whatsapp-button' => __DIR__ . '/blueprints/tabs/whatsapp-button.yml'
+    ],
     'snippets' => [
         'whatsapp-button' => __DIR__ . '/snippets/whatsapp-button.php'
     ],

@@ -1,0 +1,100 @@
+type: group
+fields:
+  whatsappEnabled:
+    label: owebstudio.whatsapp-button.panel.enabled
+    type: toggle
+    default: true
+    translate: false
+    width: 1/2
+  whatsappPhone:
+    label: owebstudio.whatsapp-button.panel.phone
+    type: tel
+    help: owebstudio.whatsapp-button.panel.phone.help
+    translate: false
+    width: 1/2
+  whatsappName:
+    label: owebstudio.whatsapp-button.panel.name
+    type: text
+    width: 1/2
+  whatsappStatus:
+    label: owebstudio.whatsapp-button.panel.status
+    type: text
+    width: 1/2
+  whatsappAvatar:
+    label: owebstudio.whatsapp-button.panel.avatar
+    type: files
+    multiple: false
+    translate: false
+    width: 1/2
+  whatsappDefaultMessage:
+    label: owebstudio.whatsapp-button.panel.defaultMessage
+    type: text
+    help: owebstudio.whatsapp-button.panel.defaultMessage.help
+    width: 1/2
+  whatsappMessages:
+    label: owebstudio.whatsapp-button.panel.messages
+    type: structure
+    fields:
+      text:
+        label: owebstudio.whatsapp-button.panel.message
+        type: text
+        required: true
+  whatsappAgents:
+    label: owebstudio.whatsapp-button.panel.agents
+    type: structure
+    help: owebstudio.whatsapp-button.panel.agents.help
+    columns:
+      name: true
+      phone: true
+      status: true
+    fields:
+      name:
+        label: owebstudio.whatsapp-button.panel.name
+        type: text
+        required: true
+        width: 1/2
+      phone:
+        label: owebstudio.whatsapp-button.panel.phone
+        type: tel
+        required: true
+        help: owebstudio.whatsapp-button.panel.phone.help
+        width: 1/2
+      status:
+        label: owebstudio.whatsapp-button.panel.status
+        type: text
+        width: 1/2
+      avatar:
+        label: owebstudio.whatsapp-button.panel.avatar
+        type: files
+        multiple: false
+        width: 1/2
+      hours:
+        extends: fields/whatsapp-button-hours
+        help: owebstudio.whatsapp-button.panel.agents.hours.help
+  whatsappHours:
+    extends: fields/whatsapp-button-hours
+    translate: false
+  whatsappOutsideHours:
+    label: owebstudio.whatsapp-button.panel.outsideHours
+    type: toggles
+    default: offline
+    translate: false
+    options:
+      - value: offline
+        text:
+          en: Show as offline
+          de: Als offline anzeigen
+          tr: Çevrimdışı göster
+      - value: hide
+        text:
+          en: Hide the button
+          de: Button ausblenden
+          tr: Butonu gizle
+  whatsappOfflineMessages:
+    label: owebstudio.whatsapp-button.panel.offlineMessages
+    type: structure
+    fields:
+      text:
+        label: owebstudio.whatsapp-button.panel.message
+        type: text
+        required: true

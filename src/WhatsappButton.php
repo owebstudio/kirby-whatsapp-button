@@ -7,6 +7,7 @@ use DateTimeZone;
 use Exception;
 use Kirby\Cms\App;
 use Kirby\Cms\Page;
+use Kirby\Content\Field;
 use Kirby\Toolkit\I18n;
 
 /**
@@ -179,7 +180,11 @@ class WhatsappButton
         }
 
         $options = array_filter(
-            array_replace($this->kirby->option('owebstudio.whatsapp-button', []), $this->options),
+            array_replace(
+                $this->kirby->option('owebstudio.whatsapp-button', []),
+                $this->panel(),
+                $this->options
+            ),
             fn ($value) => $value !== null
         );
 
@@ -191,6 +196,50 @@ class WhatsappButton
         }
 
         return $this->resolved = $options;
+    }
+
+    /**
+     * Options from the site fields of the `fields/whatsapp-button`
+     * blueprint; empty fields keep the plugin options
+     */
+    public function panel(): array
+    {
+        $content = $this->kirby->site()->content();
+        $options = [];
+
+        $text = fn (Field $field) => $field->isNotEmpty() === true ? $field->value() : null;
+        $list = fn (Field $field) => array_values(array_filter(
+            array_column($field->yaml(), 'text'),
+            fn ($value) => is_string($value) === true && $value !== ''
+        ));
+
+        // the toggle can only switch off the button, a closure
+        // in the `enabled` option still decides otherwise
+        if ($content->get('whatsappEnabled')->isNotEmpty() === true && $content->get('whatsappEnabled')->toBool() === false) {
+            $options['enabled'] = false;
+        }
+
+        $options['phone']           = $text($content->get('whatsappPhone'));
+        $options['name']            = $text($content->get('whatsappName'));
+        $options['status']          = $text($content->get('whatsappStatus'));
+        $options['avatar']          = $this->avatar($content->get('whatsappAvatar'));
+        $options['defaultMessage']  = $text($content->get('whatsappDefaultMessage'));
+        $options['messages']        = $list($content->get('whatsappMessages')) ?: null;
+        $options['offlineMessages'] = $list($content->get('whatsappOfflineMessages')) ?: null;
+        $options['hours']           = $content->get('whatsappHours')->yaml() ?: null;
+        $options['outsideHours']    = $text($content->get('whatsappOutsideHours'));
+
+        foreach ($content->get('whatsappAgents')->toStructure() as $agent) {
+            $options['agents'][] = [
+                'name'   => $text($agent->content()->get('name')),
+                'phone'  => $text($agent->content()->get('phone')),
+                'status' => $text($agent->content()->get('status')),
+                'avatar' => $this->avatar($agent->content()->get('avatar')),
+                'hours'  => $agent->content()->get('hours')->yaml() ?: null
+            ];
+        }
+
+        return array_filter($options, fn ($value) => $value !== null);
     }
 
     /**
@@ -232,6 +281,14 @@ class WhatsappButton
         } catch (Exception) {
             return date_default_timezone_get();
         }
+    }
+
+    /**
+     * URL of a square thumbnail of the selected file
+     */
+    protected function avatar(Field $field): string|null
+    {
+        return $field->toFile()?->crop(96, 96)->url();
     }
 
     /**

@@ -1,0 +1,55 @@
+label: owebstudio.whatsapp-button.panel.hours
+type: structure
+help: owebstudio.whatsapp-button.panel.hours.help
+fields:
+  days:
+    label: owebstudio.whatsapp-button.panel.days
+    type: checkboxes
+    required: true
+    columns: 7
+    options:
+      - value: mon
+        text:
+          en: Mon
+          de: Mo
+          tr: Pzt
+      - value: tue
+        text:
+          en: Tue
+          de: Di
+          tr: Sal
+      - value: wed
+        text:
+          en: Wed
+          de: Mi
+          tr: Çar
+      - value: thu
+        text:
+          en: Thu
+          de: Do
+          tr: Per
+      - value: fri
+        text:
+          en: Fri
+          de: Fr
+          tr: Cum
+      - value: sat
+        text:
+          en: Sat
+          de: Sa
+          tr: Cmt
+      - value: sun
+        text:
+          en: Sun
+          de: So
+          tr: Paz
+  from:
+    label: owebstudio.whatsapp-button.panel.from
+    type: time
+    required: true
+    width: 1/2
+  to:
+    label: owebstudio.whatsapp-button.panel.to
+    type: time
+    required: true
+    width: 1/2

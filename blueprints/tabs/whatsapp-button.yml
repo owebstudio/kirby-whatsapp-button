@@ -1,0 +1,4 @@
+label: WhatsApp
+icon: whatsapp
+fields:
+  whatsappButton: fields/whatsapp-button
