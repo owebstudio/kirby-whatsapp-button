@@ -2,6 +2,10 @@
 
 use Kirby\Cms\App as Kirby;
 
+load([
+    'Owebstudio\\WhatsappButton\\WhatsappButton' => 'src/WhatsappButton.php'
+], __DIR__);
+
 Kirby::plugin('owebstudio/whatsapp-button', [
     'options' => [
         'enabled' => true,
