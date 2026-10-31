@@ -28,13 +28,13 @@
     "sort-packages": true
   },
   "require": {
-    "php": "^7.4|^8.0",
+    "php": "^8.2",
     "getkirby/composer-installer": "^1.2"
   },
   "extra": {
     "installer-name": "kirby-whatsapp-button",
     "kirby": {
-      "compatible": "^3.4 || ^4.0 || ^5.0"
+      "compatible": "^5.0 || ^6.0"
     }
   }
 }
