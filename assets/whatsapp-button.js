@@ -125,6 +125,10 @@ WhatsappButton.prototype = {
       .join("")
       .toUpperCase();
   },
+  link: function (phone, message) {
+    // wa.me expects the number in international format with digits only
+    return "https://wa.me/" + String(phone).replace(/\D/g, "") + "?text=" + encodeURIComponent(message);
+  },
   render: function () {
     let self = this;
 
@@ -287,15 +291,13 @@ WhatsappButton.prototype = {
       "click",
       function () {
         let messageInput = document.querySelector("." + self.classes.messageInput);
-        let messageContent = messageInput.value;
+        let messageContent = messageInput.value.trim();
 
         if (messageContent.length === 0) {
           messageContent = self.config.defaultMessage;
         }
 
-        window.open(
-          "https://api.whatsapp.com/send?phone=" + self.config.phone + "&text=" + encodeURI(messageContent)
-        );
+        window.open(self.link(self.config.phone, messageContent), "_blank", "noopener");
       },
       false
     );
