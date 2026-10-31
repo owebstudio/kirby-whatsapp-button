@@ -8,7 +8,6 @@ array_filter($whatsappButtonOptions, function ($value) {
 
 // resolve the site title on render, when all plugins and the current language are loaded
 $whatsappButtonOptions['name'] ??= site()->title()->value();
-$whatsappButtonOptions['avatar'] ??= 'https://ui-avatars.com/api/?background=25D366&color=fff&name=' . rawurlencode($whatsappButtonOptions['name']);
 
 // allow callable
 $whatsappButtonEnabled = $whatsappButtonOptions['enabled'] ?? true;

@@ -15,6 +15,7 @@ WhatsappButton.prototype = {
     chatHeader: "wb-chat-header",
     userObject: "wb-user-object",
     userAvatar: "wb-user-avatar",
+    userInitials: "wb-user-initials",
     userBody: "wb-user-body",
     userName: "wb-user-name",
     userStatus: "wb-user-status",
@@ -36,7 +37,7 @@ WhatsappButton.prototype = {
     autoOpenTimeout: 5000,
     doNotDisturb: false,
     name: "Customer support",
-    avatar: "https://ui-avatars.com/api/?background=25D366&color=fff&name=Customer+support",
+    avatar: null,
     status: "online",
     showStatus: true,
     messages: "Hello, how can we help you?",
@@ -113,6 +114,17 @@ WhatsappButton.prototype = {
   eraseCookie: function (name) {
     return (document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;");
   },
+  initials: function (name) {
+    return String(name || "")
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(function (word) {
+        return Array.from(word)[0] || "";
+      })
+      .join("")
+      .toUpperCase();
+  },
   render: function () {
     let self = this;
 
@@ -179,10 +191,20 @@ WhatsappButton.prototype = {
     $userObject.classList.add(self.classes.userObject);
     $chatHeader.appendChild($userObject);
 
-    // Append User Avatar
-    let $userAvatar = document.createElement("img");
+    // Append User Avatar, or the initials of the name without an avatar
+    let $userAvatar;
+
+    if (self.config.avatar) {
+      $userAvatar = document.createElement("img");
+      $userAvatar.setAttribute("src", self.config.avatar);
+      $userAvatar.setAttribute("alt", "");
+    } else {
+      $userAvatar = document.createElement("span");
+      $userAvatar.classList.add(self.classes.userInitials);
+      $userAvatar.textContent = self.initials(self.config.name);
+    }
+
     $userAvatar.classList.add(self.classes.userAvatar);
-    $userAvatar.setAttribute("src", self.config.avatar);
     $userObject.appendChild($userAvatar);
 
     // Append User Body
