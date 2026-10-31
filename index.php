@@ -28,6 +28,8 @@ Kirby::plugin('owebstudio/whatsapp-button', [
         'defaultMessage' => null,
         'buttonLabel' => null,
         'sendLabel' => null,
+        'backLabel' => null,
+        'agents' => [],
     ],
     'snippets' => [
         'whatsapp-button' => __DIR__ . '/snippets/whatsapp-button.php'

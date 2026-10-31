@@ -14,10 +14,13 @@
       base: "whatsappButton",
       position: "is-right",
       isOpen: "is-open",
+      isList: "is-list",
+      hasAgents: "has-agents",
       toggleButton: "wb-toggle-button",
       toggleBadge: "wb-unread-badge",
       chatScreen: "wb-chat",
       chatHeader: "wb-chat-header",
+      backButton: "wb-back-button",
       userObject: "wb-user-object",
       userAvatar: "wb-user-avatar",
       userInitials: "wb-user-initials",
@@ -27,6 +30,11 @@
       chatBody: "wb-chat-body",
       messageList: "wb-message-list",
       messageListItem: "wb-message-list-item",
+      agentList: "wb-agent-list",
+      agentButton: "wb-agent",
+      agentBody: "wb-agent-body",
+      agentName: "wb-agent-name",
+      agentStatus: "wb-agent-status",
       chatFooter: "wb-chat-footer",
       messageInput: "wb-message-input",
       submitButton: "wb-send-button",
@@ -50,14 +58,23 @@
       defaultMessage: "Hello",
       buttonLabel: "Chat on WhatsApp",
       sendLabel: "Send",
+      backLabel: "Back",
       phone: "",
+      agents: [],
     },
     init: function () {
       // Introduce defaults that can be extended either
       // globally or using an object literal.
       this.config = this.extend({}, this.defaults, this.options);
 
+      // Without a list of agents, the options are the only agent.
+      this.agents = this.config.agents.length > 0 ? this.config.agents : [this.config];
+
       this.elm.classList.add(this.classes.base);
+
+      if (this.agents.length > 1) {
+        this.elm.classList.add(this.classes.hasAgents);
+      }
 
       if (this.config.position === "left" || this.config.position === "right") {
         this.elm.classList.add("is-" + this.config.position);
@@ -105,6 +122,25 @@
         // storage is not available
       }
     },
+    avatar: function (person) {
+      // An image, or the initials of the name without an avatar
+      let $avatar;
+
+      if (person.avatar) {
+        $avatar = document.createElement("img");
+        $avatar.setAttribute("src", person.avatar);
+        $avatar.setAttribute("alt", "");
+      } else {
+        $avatar = document.createElement("span");
+        $avatar.classList.add(this.classes.userInitials);
+        $avatar.setAttribute("aria-hidden", "true");
+        $avatar.textContent = this.initials(person.name);
+      }
+
+      $avatar.classList.add(this.classes.userAvatar);
+
+      return $avatar;
+    },
     initials: function (name) {
       return String(name || "")
         .trim()
@@ -150,7 +186,6 @@
       let $chat = document.createElement("div");
       $chat.classList.add(self.classes.chatScreen);
       $chat.setAttribute("role", "dialog");
-      $chat.setAttribute("aria-label", self.config.name);
       self.elm.appendChild($chat);
 
       // Check if the chat screen will always be shown.
@@ -173,26 +208,17 @@
       $chatHeader.classList.add(self.classes.chatHeader);
       $chat.appendChild($chatHeader);
 
+      // Append Back Button to the list of agents
+      let $backButton = document.createElement("button");
+      $backButton.classList.add(self.classes.backButton);
+      $backButton.setAttribute("type", "button");
+      $backButton.setAttribute("aria-label", self.config.backLabel);
+      $chatHeader.appendChild($backButton);
+
       // Append User Object
       let $userObject = document.createElement("div");
       $userObject.classList.add(self.classes.userObject);
       $chatHeader.appendChild($userObject);
-
-      // Append User Avatar, or the initials of the name without an avatar
-      let $userAvatar;
-
-      if (self.config.avatar) {
-        $userAvatar = document.createElement("img");
-        $userAvatar.setAttribute("src", self.config.avatar);
-        $userAvatar.setAttribute("alt", "");
-      } else {
-        $userAvatar = document.createElement("span");
-        $userAvatar.classList.add(self.classes.userInitials);
-        $userAvatar.textContent = self.initials(self.config.name);
-      }
-
-      $userAvatar.classList.add(self.classes.userAvatar);
-      $userObject.appendChild($userAvatar);
 
       // Append User Body
       let $userBody = document.createElement("div");
@@ -202,17 +228,18 @@
       // Append User Name
       let $userName = document.createElement("strong");
       $userName.className = self.classes.userName;
-      $userName.textContent = self.config.name;
       $userBody.appendChild($userName);
 
       // Append User Status
-      if (self.config.showStatus) {
-        let $userStatus = document.createElement("small");
-        $userStatus.className = self.classes.userStatus;
-        $userStatus.textContent = self.config.status;
+      let $userStatus = document.createElement("small");
+      $userStatus.className = self.classes.userStatus;
 
+      if (self.config.showStatus) {
         $userBody.appendChild($userStatus);
       }
+
+      self.chat = $chat;
+      self.header = { avatar: $userObject, name: $userName, status: $userStatus };
 
       // Append Dialog Screen Body
       let $chatBody = document.createElement("div");
@@ -243,6 +270,45 @@
         $messageList.appendChild(item);
       }
 
+      // Append Agents List
+      let $agentList = document.createElement("ul");
+      $agentList.classList.add(self.classes.agentList);
+      $chatBody.appendChild($agentList);
+
+      if (self.agents.length > 1) {
+        self.agents.forEach(function (agent) {
+          let $agentItem = document.createElement("li");
+          let $agentButton = document.createElement("button");
+          $agentButton.classList.add(self.classes.agentButton);
+          $agentButton.setAttribute("type", "button");
+          $agentButton.appendChild(self.avatar(agent));
+
+          let $agentBody = document.createElement("span");
+          $agentBody.classList.add(self.classes.agentBody);
+          $agentButton.appendChild($agentBody);
+
+          let $agentName = document.createElement("span");
+          $agentName.classList.add(self.classes.agentName);
+          $agentName.textContent = agent.name;
+          $agentBody.appendChild($agentName);
+
+          if (self.config.showStatus && agent.status) {
+            let $agentStatus = document.createElement("span");
+            $agentStatus.classList.add(self.classes.agentStatus);
+            $agentStatus.textContent = agent.status;
+            $agentBody.appendChild($agentStatus);
+          }
+
+          $agentButton.addEventListener("click", function () {
+            self.selectAgent(agent);
+            $messageInput.focus();
+          });
+
+          $agentItem.appendChild($agentButton);
+          $agentList.appendChild($agentItem);
+        });
+      }
+
       // Append Dialog Screen Footer
       let $chatFooter = document.createElement("form");
       $chatFooter.classList.add(self.classes.chatFooter);
@@ -262,6 +328,12 @@
       $submitButton.setAttribute("type", "submit");
       $submitButton.setAttribute("aria-label", self.config.sendLabel);
       $chatFooter.appendChild($submitButton);
+
+      // Go back to the list of agents.
+      $backButton.addEventListener("click", function () {
+        self.showAgents();
+        $agentList.querySelector("button").focus();
+      });
 
       // Show the chat screen when the toggle button is clicked.
       $toggleButton.addEventListener("click", function () {
@@ -286,8 +358,30 @@
           messageContent = self.config.defaultMessage;
         }
 
-        window.open(self.link(self.config.phone, messageContent), "_blank", "noopener");
+        window.open(self.link(self.agent.phone, messageContent), "_blank", "noopener");
       });
+
+      if (self.agents.length > 1) {
+        self.showAgents();
+      } else {
+        self.selectAgent(self.agents[0]);
+      }
+    },
+    setHeader: function (person) {
+      this.header.avatar.replaceChildren(this.avatar(person));
+      this.header.name.textContent = person.name;
+      this.header.status.textContent = person.status || this.config.status;
+      this.chat.setAttribute("aria-label", person.name);
+    },
+    showAgents: function () {
+      this.agent = null;
+      this.chat.classList.add(this.classes.isList);
+      this.setHeader(this.config);
+    },
+    selectAgent: function (agent) {
+      this.agent = agent;
+      this.chat.classList.remove(this.classes.isList);
+      this.setHeader(agent);
     },
     isOpen: function () {
       return this.elm.classList.contains(this.classes.isOpen);

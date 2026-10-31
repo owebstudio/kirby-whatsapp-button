@@ -16,6 +16,7 @@ class WhatsappButton
      * Options with a default text in the plugin translations
      */
     public const TEXTS = [
+        'backLabel',
         'buttonLabel',
         'defaultMessage',
         'messages',
@@ -33,6 +34,36 @@ class WhatsappButton
     }
 
     /**
+     * Agents with a phone number; without the `agents`
+     * option, the options are the only agent
+     */
+    public function agents(): array
+    {
+        $options = $this->options();
+        $agents  = $options['agents'] ?? [];
+        $list    = [];
+
+        if (empty($agents) === true) {
+            $agents = [$options];
+        }
+
+        foreach ($agents as $agent) {
+            if (empty($agent['phone']) === true) {
+                continue;
+            }
+
+            $list[] = array_filter([
+                'name'   => (string)($agent['name'] ?? $agent['phone']),
+                'phone'  => (string)$agent['phone'],
+                'avatar' => $agent['avatar'] ?? null,
+                'status' => $agent['status'] ?? null
+            ], fn ($value) => $value !== null && $value !== '');
+        }
+
+        return $list;
+    }
+
+    /**
      * URL of a plugin asset with a hash for cache busting
      */
     public function asset(string $path): string
@@ -46,8 +77,9 @@ class WhatsappButton
     public function config(): array
     {
         $config = $this->options();
+        $config['agents'] = $this->agents();
 
-        unset($config['enabled']);
+        unset($config['enabled'], $config['phone']);
 
         return $config;
     }
@@ -61,7 +93,7 @@ class WhatsappButton
             $enabled = $enabled($options);
         }
 
-        return $enabled === true && empty($options['phone']) === false;
+        return $enabled === true && $this->agents() !== [];
     }
 
     /**

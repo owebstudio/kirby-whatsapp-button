@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'owebstudio.whatsapp-button.backLabel' => 'Geri',
     'owebstudio.whatsapp-button.buttonLabel' => 'WhatsApp’tan yazın',
     'owebstudio.whatsapp-button.defaultMessage' => 'Merhaba',
     'owebstudio.whatsapp-button.messages' => 'Merhaba, size nasıl yardımcı olabiliriz?',
