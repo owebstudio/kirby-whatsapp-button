@@ -15,7 +15,9 @@
 }
 
 .whatsappButton .wb-toggle-button {
+  appearance: none;
   background-color: #25d366;
+  border: 0;
   border-radius: 100%;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   color: #fff;
@@ -27,6 +29,7 @@
   bottom: 0;
   right: 0;
   width: 56px;
+  margin: 0;
   animation-name: toggleButton;
   animation-duration: 0.5s;
   animation-fill-mode: both;
@@ -86,7 +89,8 @@
   bottom: 70px;
   right: 0;
   transform: translateY(50px);
-  transition: transform 160ms ease-in-out, opacity 160ms ease-in-out;
+  transition: transform 160ms ease-in-out, opacity 160ms ease-in-out, visibility 0s linear 160ms;
+  visibility: hidden;
   width: 320px;
 }
 
@@ -207,16 +211,21 @@
 }
 
 .whatsappButton .wb-message-input:focus {
+  border-color: #128c7e;
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.13);
   outline: 0;
 }
 
 .whatsappButton .wb-send-button {
+  appearance: none;
   background-color: #128c7e;
+  border: 0;
   border-radius: 100%;
   cursor: pointer;
   display: block;
   height: 36px;
+  margin: 0;
+  padding: 0;
   position: relative;
   transition: all 0.15s ease-in-out;
   width: 36px;
@@ -239,6 +248,12 @@
   background-color: #075e54;
 }
 
+.whatsappButton .wb-toggle-button:focus-visible,
+.whatsappButton .wb-send-button:focus-visible {
+  outline: 2px solid #128c7e;
+  outline-offset: 2px;
+}
+
 .whatsappButton.is-left {
   left: 24px;
 }
@@ -254,23 +269,22 @@
   left: 0;
 }
 
-.whatsappButton.is-active .wb-toggle-button:before,
 .whatsappButton.is-open .wb-toggle-button:before {
   opacity: 0;
   transform: rotate(-45deg);
 }
 
-.whatsappButton.is-active .wb-toggle-button:after,
 .whatsappButton.is-open .wb-toggle-button:after {
   opacity: 1;
   transform: rotate(0);
 }
 
-.whatsappButton.is-active .wb-chat,
 .whatsappButton.is-open .wb-chat {
   opacity: 1;
   pointer-events: all;
   transform: translateY(0);
+  transition-delay: 0s;
+  visibility: visible;
 }
 
 @keyframes toggleButton {

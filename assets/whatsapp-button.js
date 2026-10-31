@@ -8,7 +8,6 @@ WhatsappButton.prototype = {
     base: "whatsappButton",
     position: "is-right",
     isOpen: "is-open",
-    isActive: "is-active",
     toggleButton: "wb-toggle-button",
     toggleBadge: "wb-unread-badge",
     chatScreen: "wb-chat",
@@ -43,6 +42,8 @@ WhatsappButton.prototype = {
     messages: "Hello, how can we help you?",
     placeholder: "Type here...",
     defaultMessage: "Hello",
+    buttonLabel: "Chat on WhatsApp",
+    sendLabel: "Send",
     phone: "",
   },
   init: function () {
@@ -133,9 +134,13 @@ WhatsappButton.prototype = {
     let self = this;
 
     // Append Toggle Button
-    let $toggleButton = document.createElement("div");
+    let $toggleButton = document.createElement("button");
     $toggleButton.classList.add(self.classes.toggleButton);
+    $toggleButton.setAttribute("type", "button");
+    $toggleButton.setAttribute("aria-label", self.config.buttonLabel);
+    $toggleButton.setAttribute("aria-expanded", "false");
     self.elm.appendChild($toggleButton);
+    self.toggleButton = $toggleButton;
 
     // Check if the badge will show
     if (self.config.showBadge) {
@@ -143,6 +148,7 @@ WhatsappButton.prototype = {
       let $toggleBadge = document.createElement("span");
       $toggleBadge.className = self.classes.toggleBadge;
       $toggleBadge.textContent = self.config.countBadge;
+      $toggleBadge.setAttribute("aria-hidden", "true");
       $toggleButton.appendChild($toggleBadge);
 
       setTimeout(function () {
@@ -153,12 +159,14 @@ WhatsappButton.prototype = {
     // Append Chat Screen
     let $chat = document.createElement("div");
     $chat.classList.add(self.classes.chatScreen);
+    $chat.setAttribute("role", "dialog");
+    $chat.setAttribute("aria-label", self.config.name);
     self.elm.appendChild($chat);
 
     // Check if the chat screen will always be shown.
     if (self.config.alwaysOpen && !self.elm.classList.contains(self.classes.isOpen)) {
       setTimeout(function () {
-        self.elm.classList.add(self.classes.isOpen);
+        self.open();
       }, self.config.alwaysOpenTimeout);
 
       self.setCookie("wbAlwaysOpen", "true");
@@ -169,7 +177,7 @@ WhatsappButton.prototype = {
       if (self.config.doNotDisturb) {
         if (self.getCookie("wbShownPopup") !== "true") {
           setTimeout(function () {
-            self.elm.classList.toggle(self.classes.isActive);
+            self.open();
           }, self.config.autoOpenTimeout);
 
           self.setCookie("wbShownPopup", "true");
@@ -177,8 +185,8 @@ WhatsappButton.prototype = {
       } else {
         // Check if the chat screen will open automatically
         setTimeout(function () {
-          if (self.config.autoOpen && !self.elm.classList.contains(self.classes.isActive)) {
-            self.elm.classList.toggle(self.classes.isActive);
+          if (self.config.autoOpen && !self.isOpen()) {
+            self.open();
             self.setCookie("wbShownPopup", "true");
           }
         }, self.config.autoOpenTimeout);
@@ -261,7 +269,7 @@ WhatsappButton.prototype = {
     }
 
     // Append Dialog Screen Footer
-    let $chatFooter = document.createElement("div");
+    let $chatFooter = document.createElement("form");
     $chatFooter.classList.add(self.classes.chatFooter);
     $chat.appendChild($chatFooter);
 
@@ -270,37 +278,59 @@ WhatsappButton.prototype = {
     $messageInput.classList.add(self.classes.messageInput);
     $messageInput.setAttribute("type", "text");
     $messageInput.setAttribute("placeholder", self.config.placeholder);
+    $messageInput.setAttribute("aria-label", self.config.placeholder);
     $chatFooter.appendChild($messageInput);
 
     // Append Submit Button
-    let $submitButton = document.createElement("div");
+    let $submitButton = document.createElement("button");
     $submitButton.classList.add(self.classes.submitButton);
+    $submitButton.setAttribute("type", "submit");
+    $submitButton.setAttribute("aria-label", self.config.sendLabel);
     $chatFooter.appendChild($submitButton);
 
     // Show the chat screen when the toggle button is clicked.
     $toggleButton.addEventListener("click", function () {
-      if (self.elm.classList.contains(self.classes.isOpen)) {
-        self.elm.classList.remove(self.classes.isOpen);
-      } else {
-        self.elm.classList.toggle(self.classes.isActive);
+      self.toggle();
+    });
+
+    // Close the chat screen with the escape key.
+    self.elm.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && self.isOpen()) {
+        self.close();
+        $toggleButton.focus();
       }
     });
 
-    // When the submit button is clicked, forward the message to WhatsApp.
-    $submitButton.addEventListener(
-      "click",
-      function () {
-        let messageInput = document.querySelector("." + self.classes.messageInput);
-        let messageContent = messageInput.value.trim();
+    // When the form is submitted, forward the message to WhatsApp.
+    $chatFooter.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-        if (messageContent.length === 0) {
-          messageContent = self.config.defaultMessage;
-        }
+      let messageContent = $messageInput.value.trim();
 
-        window.open(self.link(self.config.phone, messageContent), "_blank", "noopener");
-      },
-      false
-    );
+      if (messageContent.length === 0) {
+        messageContent = self.config.defaultMessage;
+      }
+
+      window.open(self.link(self.config.phone, messageContent), "_blank", "noopener");
+    });
+  },
+  isOpen: function () {
+    return this.elm.classList.contains(this.classes.isOpen);
+  },
+  open: function () {
+    this.elm.classList.add(this.classes.isOpen);
+    this.toggleButton.setAttribute("aria-expanded", "true");
+  },
+  close: function () {
+    this.elm.classList.remove(this.classes.isOpen);
+    this.toggleButton.setAttribute("aria-expanded", "false");
+  },
+  toggle: function () {
+    if (this.isOpen()) {
+      this.close();
+    } else {
+      this.open();
+    }
   },
 };
 
