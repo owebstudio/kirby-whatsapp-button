@@ -264,6 +264,11 @@
   min-width: 0;
 }
 
+.whatsappButton .wb-agent.is-offline .wb-user-avatar {
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+
 .whatsappButton .wb-agent-name {
   font-weight: 600;
 }

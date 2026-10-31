@@ -16,6 +16,7 @@
       isOpen: "is-open",
       isList: "is-list",
       hasAgents: "has-agents",
+      isOffline: "is-offline",
       toggleButton: "wb-toggle-button",
       toggleBadge: "wb-unread-badge",
       chatScreen: "wb-chat",
@@ -61,6 +62,11 @@
       backLabel: "Back",
       phone: "",
       agents: [],
+      hours: [],
+      timezone: null,
+      outsideHours: "offline",
+      offlineStatus: "offline",
+      offlineMessages: "We are away right now. Leave us a message and we will get back to you as soon as we can.",
     },
     init: function () {
       // Introduce defaults that can be extended either
@@ -70,7 +76,30 @@
       // Without a list of agents, the options are the only agent.
       this.agents = this.config.agents.length > 0 ? this.config.agents : [this.config];
 
+      // Check the office hours of every agent
+      this.agents.forEach(function (agent) {
+        agent.online = this.isAvailable(agent.hours);
+      }, this);
+
+      if (this.config.outsideHours === "hide") {
+        this.agents = this.agents.filter(function (agent) {
+          return agent.online;
+        });
+
+        if (this.agents.length === 0) {
+          return this;
+        }
+      }
+
+      this.online = this.agents.some(function (agent) {
+        return agent.online;
+      });
+
       this.elm.classList.add(this.classes.base);
+
+      if (!this.online) {
+        this.elm.classList.add(this.classes.isOffline);
+      }
 
       if (this.agents.length > 1) {
         this.elm.classList.add(this.classes.hasAgents);
@@ -121,6 +150,51 @@
       } catch (e) {
         // storage is not available
       }
+    },
+    isAvailable: function (hours) {
+      if (!hours || hours.length === 0) {
+        return true;
+      }
+
+      let now = this.now();
+
+      return hours.some(function (range) {
+        return range[0] === now.day && now.minutes >= range[1] && now.minutes < range[2];
+      });
+    },
+    // The day of the week (1 to 7 from Monday) and the minutes
+    // since midnight in the time zone of the office hours
+    now: function () {
+      let date = new Date();
+      let parts = {};
+
+      try {
+        new Intl.DateTimeFormat("en-US", {
+          timeZone: this.config.timezone || undefined,
+          weekday: "short",
+          hour: "numeric",
+          minute: "numeric",
+          hourCycle: "h23",
+        })
+          .formatToParts(date)
+          .forEach(function (part) {
+            parts[part.type] = part.value;
+          });
+      } catch (e) {
+        return { day: date.getDay() || 7, minutes: date.getHours() * 60 + date.getMinutes() };
+      }
+
+      return {
+        day: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(parts.weekday) + 1,
+        minutes: parseInt(parts.hour, 10) * 60 + parseInt(parts.minute, 10),
+      };
+    },
+    status: function (person) {
+      if (person.online === false) {
+        return this.config.offlineStatus;
+      }
+
+      return person.status || this.config.status;
     },
     avatar: function (person) {
       // An image, or the initials of the name without an avatar
@@ -251,10 +325,10 @@
       $messageList.classList.add(self.classes.messageList);
       $chatBody.appendChild($messageList);
 
-      // Append Messages
-      if (typeof self.config.messages === "object") {
-        let messages = self.config.messages;
+      // Append Messages, or the messages for outside of the office hours
+      let messages = self.online ? self.config.messages : self.config.offlineMessages;
 
+      if (typeof messages === "object") {
         messages.forEach(function (message, i) {
           setTimeout(function () {
             let item = document.createElement("li");
@@ -266,7 +340,7 @@
       } else {
         let item = document.createElement("li");
         item.className = self.classes.messageListItem;
-        item.textContent = self.config.messages;
+        item.textContent = messages;
         $messageList.appendChild(item);
       }
 
@@ -292,11 +366,15 @@
           $agentName.textContent = agent.name;
           $agentBody.appendChild($agentName);
 
-          if (self.config.showStatus && agent.status) {
+          if (self.config.showStatus && (agent.status || !agent.online)) {
             let $agentStatus = document.createElement("span");
             $agentStatus.classList.add(self.classes.agentStatus);
-            $agentStatus.textContent = agent.status;
+            $agentStatus.textContent = self.status(agent);
             $agentBody.appendChild($agentStatus);
+          }
+
+          if (!agent.online) {
+            $agentButton.classList.add(self.classes.isOffline);
           }
 
           $agentButton.addEventListener("click", function () {
@@ -370,13 +448,13 @@
     setHeader: function (person) {
       this.header.avatar.replaceChildren(this.avatar(person));
       this.header.name.textContent = person.name;
-      this.header.status.textContent = person.status || this.config.status;
+      this.header.status.textContent = this.status(person);
       this.chat.setAttribute("aria-label", person.name);
     },
     showAgents: function () {
       this.agent = null;
       this.chat.classList.add(this.classes.isList);
-      this.setHeader(this.config);
+      this.setHeader({ name: this.config.name, avatar: this.config.avatar, online: this.online });
     },
     selectAgent: function (agent) {
       this.agent = agent;

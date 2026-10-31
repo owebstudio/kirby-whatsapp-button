@@ -3,6 +3,8 @@
 namespace Owebstudio\WhatsappButton;
 
 use Closure;
+use DateTimeZone;
+use Exception;
 use Kirby\Cms\App;
 use Kirby\Toolkit\I18n;
 
@@ -20,6 +22,8 @@ class WhatsappButton
         'buttonLabel',
         'defaultMessage',
         'messages',
+        'offlineMessages',
+        'offlineStatus',
         'placeholder',
         'sendLabel',
         'status'
@@ -56,8 +60,60 @@ class WhatsappButton
                 'name'   => (string)($agent['name'] ?? $agent['phone']),
                 'phone'  => (string)$agent['phone'],
                 'avatar' => $agent['avatar'] ?? null,
-                'status' => $agent['status'] ?? null
+                'status' => $agent['status'] ?? null,
+                'hours'  => $this->hours($agent['hours'] ?? $options['hours'] ?? [])
             ], fn ($value) => $value !== null && $value !== '');
+        }
+
+        return $list;
+    }
+
+    /**
+     * Converts the office hours to a list of
+     * `[day, from, to]` with the ISO day of the week
+     * and the minutes since midnight
+     *
+     * Accepts days or day ranges as keys with time ranges as values
+     * (`'mon-fri' => '09:00-12:00, 13:00-17:00'`) and a list of
+     * entries with `days`, `from` and `to` (Panel structure field)
+     */
+    public function hours(array|string|null $hours): array
+    {
+        $list = [];
+
+        foreach ((array)$hours as $key => $value) {
+            if (is_array($value) === true && isset($value['days']) === true) {
+                $days   = $value['days'];
+                $ranges = [($value['from'] ?? '') . '-' . ($value['to'] ?? '')];
+            } else {
+                $days   = $key;
+                $ranges = is_array($value) === true ? $value : explode(',', (string)$value);
+            }
+
+            foreach ($this->days($days) as $day) {
+                foreach ($ranges as $range) {
+                    $times = explode('-', (string)$range);
+                    $from  = $this->minutes($times[0] ?? '');
+                    $to    = $this->minutes($times[1] ?? '');
+
+                    if ($from === null || $to === null) {
+                        continue;
+                    }
+
+                    // a range that ends before it starts continues on the next day
+                    if ($to <= $from) {
+                        $list[] = [$day, $from, 1440];
+
+                        if ($to > 0) {
+                            $list[] = [$day % 7 + 1, 0, $to];
+                        }
+
+                        continue;
+                    }
+
+                    $list[] = [$day, $from, $to];
+                }
+            }
         }
 
         return $list;
@@ -77,9 +133,10 @@ class WhatsappButton
     public function config(): array
     {
         $config = $this->options();
-        $config['agents'] = $this->agents();
+        $config['agents']   = $this->agents();
+        $config['timezone'] = $this->timezone();
 
-        unset($config['enabled'], $config['phone']);
+        unset($config['enabled'], $config['phone'], $config['hours']);
 
         return $config;
     }
@@ -118,5 +175,64 @@ class WhatsappButton
         }
 
         return $this->resolved = $options;
+    }
+
+    /**
+     * Time zone of the office hours
+     */
+    public function timezone(): string
+    {
+        $timezone = $this->options()['timezone'] ?? null;
+
+        try {
+            return (new DateTimeZone($timezone ?? date_default_timezone_get()))->getName();
+        } catch (Exception) {
+            return date_default_timezone_get();
+        }
+    }
+
+    /**
+     * ISO days of the week for `mon`, `mon-fri`,
+     * `sat, sun` or a list of day names
+     */
+    protected function days(array|string|int $days): array
+    {
+        $names = ['mon' => 1, 'tue' => 2, 'wed' => 3, 'thu' => 4, 'fri' => 5, 'sat' => 6, 'sun' => 7];
+        $list  = [];
+
+        foreach (is_array($days) === true ? $days : explode(',', (string)$days) as $day) {
+            $range = explode('-', strtolower(trim((string)$day)));
+            $start = $names[substr(trim($range[0]), 0, 3)] ?? null;
+            $end   = $names[substr(trim($range[1] ?? $range[0]), 0, 3)] ?? null;
+
+            if ($start === null || $end === null) {
+                continue;
+            }
+
+            // ranges can wrap around the end of the week (`fri-mon`)
+            for ($day = $start; true; $day = $day % 7 + 1) {
+                $list[] = $day;
+
+                if ($day === $end) {
+                    break;
+                }
+            }
+        }
+
+        return array_values(array_unique($list));
+    }
+
+    /**
+     * Minutes since midnight for `9`, `09:00` or `09:00:00`
+     */
+    protected function minutes(string $time): int|null
+    {
+        if (preg_match('/^(\d{1,2})(?::(\d{2}))?(?::\d{2})?$/', trim($time), $matches) !== 1) {
+            return null;
+        }
+
+        $minutes = (int)$matches[1] * 60 + (int)($matches[2] ?? 0);
+
+        return $minutes <= 1440 ? $minutes : null;
     }
 }

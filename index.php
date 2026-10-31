@@ -30,6 +30,11 @@ Kirby::plugin('owebstudio/whatsapp-button', [
         'sendLabel' => null,
         'backLabel' => null,
         'agents' => [],
+        'hours' => [],
+        'timezone' => null,
+        'outsideHours' => 'offline',
+        'offlineStatus' => null,
+        'offlineMessages' => null,
     ],
     'snippets' => [
         'whatsapp-button' => __DIR__ . '/snippets/whatsapp-button.php'
