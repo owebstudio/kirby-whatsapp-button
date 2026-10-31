@@ -97,6 +97,7 @@
   transition: transform 160ms ease-in-out, opacity 160ms ease-in-out, visibility 0s linear 160ms;
   visibility: hidden;
   width: 320px;
+  max-width: calc(100vw - 48px);
 }
 
 .whatsappButton .wb-chat-header {
@@ -210,7 +211,8 @@
   border-radius: 24px;
   box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
   color: #000;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
+  min-width: 0;
   height: 38px;
   margin: 0;
   padding: 8px 16px;
