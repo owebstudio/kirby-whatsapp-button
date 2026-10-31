@@ -6,6 +6,7 @@ use Closure;
 use DateTimeZone;
 use Exception;
 use Kirby\Cms\App;
+use Kirby\Cms\Page;
 use Kirby\Toolkit\I18n;
 
 /**
@@ -29,11 +30,22 @@ class WhatsappButton
         'status'
     ];
 
+    /**
+     * Options that can contain page placeholders
+     */
+    public const PLACEHOLDERS = [
+        'defaultMessage',
+        'messages',
+        'offlineMessages',
+        'placeholder'
+    ];
+
     protected array|null $resolved = null;
 
     public function __construct(
         protected App $kirby,
-        protected array $options = []
+        protected array $options = [],
+        protected Page|null $page = null
     ) {
     }
 
@@ -136,6 +148,10 @@ class WhatsappButton
         $config['agents']   = $this->agents();
         $config['timezone'] = $this->timezone();
 
+        foreach (static::PLACEHOLDERS as $key) {
+            $config[$key] = $this->placeholders($config[$key]);
+        }
+
         unset($config['enabled'], $config['phone'], $config['hours']);
 
         return $config;
@@ -175,6 +191,33 @@ class WhatsappButton
         }
 
         return $this->resolved = $options;
+    }
+
+    /**
+     * Replaces `{{ page.title }}`, `{{ page.url }}`, `{{ site.title }}`
+     * and `{{ site.url }}` in a text or a list of texts. Other queries
+     * are not resolved, because the texts can come from the Panel.
+     */
+    public function placeholders(array|string $text): array|string
+    {
+        if (is_array($text) === true) {
+            return array_map(fn ($item) => $this->placeholders((string)$item), $text);
+        }
+
+        $site   = $this->kirby->site();
+        $page   = $this->page ?? $site->page();
+        $values = [
+            'page.title' => $page?->title()->value() ?? '',
+            'page.url'   => $page?->url() ?? '',
+            'site.title' => $site->title()->value(),
+            'site.url'   => $site->url()
+        ];
+
+        return preg_replace_callback(
+            '/\{\{\s*(page|site)\.(title|url)\s*\}\}/',
+            fn ($matches) => $values[$matches[1] . '.' . $matches[2]],
+            $text
+        );
     }
 
     /**
