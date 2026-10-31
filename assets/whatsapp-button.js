@@ -89,37 +89,21 @@
 
       return out;
     },
-    setCookie: function (name, value, days) {
-      let expires = "";
-
-      if (days) {
-        let date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        expires = "; expires=" + date.toUTCString();
+    // The session storage remembers for the current tab
+    // that the chat screen was already opened automatically.
+    wasShown: function () {
+      try {
+        return window.sessionStorage.getItem("whatsappButtonShown") === "true";
+      } catch (e) {
+        return false;
       }
-
-      return (document.cookie = name + "=" + (value || "") + expires + "; path=/");
     },
-    getCookie: function (name) {
-      let nameEQ = name + "=";
-      let ca = document.cookie.split(";");
-
-      for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-
-        while (c.charAt(0) === " ") {
-          c = c.substring(1, c.length);
-        }
-
-        if (c.indexOf(nameEQ) === 0) {
-          return c.substring(nameEQ.length, c.length);
-        }
+    setShown: function () {
+      try {
+        window.sessionStorage.setItem("whatsappButtonShown", "true");
+      } catch (e) {
+        // storage is not available
       }
-
-      return null;
-    },
-    eraseCookie: function (name) {
-      return (document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;");
     },
     initials: function (name) {
       return String(name || "")
@@ -170,33 +154,18 @@
       self.elm.appendChild($chat);
 
       // Check if the chat screen will always be shown.
-      if (self.config.alwaysOpen && !self.elm.classList.contains(self.classes.isOpen)) {
+      if (self.config.alwaysOpen) {
         setTimeout(function () {
           self.open();
         }, self.config.alwaysOpenTimeout);
-
-        self.setCookie("wbAlwaysOpen", "true");
-      } else {
-        self.eraseCookie("wbAlwaysOpen");
-
-        // Check if do not disturb mode is turned on
-        if (self.config.doNotDisturb) {
-          if (self.getCookie("wbShownPopup") !== "true") {
-            setTimeout(function () {
-              self.open();
-            }, self.config.autoOpenTimeout);
-
-            self.setCookie("wbShownPopup", "true");
+      } else if (self.config.autoOpen && (!self.config.doNotDisturb || !self.wasShown())) {
+        // Open the chat screen automatically, only once per session in do not disturb mode
+        setTimeout(function () {
+          if (!self.isOpen()) {
+            self.open();
+            self.setShown();
           }
-        } else {
-          // Check if the chat screen will open automatically
-          setTimeout(function () {
-            if (self.config.autoOpen && !self.isOpen()) {
-              self.open();
-              self.setCookie("wbShownPopup", "true");
-            }
-          }, self.config.autoOpenTimeout);
-        }
+        }, self.config.autoOpenTimeout);
       }
 
       // Append Dialog Screen Header
