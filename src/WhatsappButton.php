@@ -4,6 +4,7 @@ namespace Owebstudio\WhatsappButton;
 
 use Closure;
 use Kirby\Cms\App;
+use Kirby\Toolkit\I18n;
 
 /**
  * Resolves the options of a widget
@@ -11,6 +12,18 @@ use Kirby\Cms\App;
  */
 class WhatsappButton
 {
+    /**
+     * Options with a default text in the plugin translations
+     */
+    public const TEXTS = [
+        'buttonLabel',
+        'defaultMessage',
+        'messages',
+        'placeholder',
+        'sendLabel',
+        'status'
+    ];
+
     protected array|null $resolved = null;
 
     public function __construct(
@@ -67,6 +80,10 @@ class WhatsappButton
 
         // resolve the site title on render, when all plugins and the current language are loaded
         $options['name'] ??= $this->kirby->site()->title()->value();
+
+        foreach (static::TEXTS as $key) {
+            $options[$key] ??= I18n::translate('owebstudio.whatsapp-button.' . $key);
+        }
 
         return $this->resolved = $options;
     }

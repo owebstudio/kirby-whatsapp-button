@@ -21,13 +21,20 @@ Kirby::plugin('owebstudio/whatsapp-button', [
         'doNotDisturb' => false,
         'name' => null,
         'avatar' => null,
-        'status' => 'online',
+        'status' => null,
         'showStatus' => true,
-        'messages' => 'Hello, how can we help you?',
-        'placeholder' => 'Type here...',
-        'defaultMessage' => 'Hello',
+        'messages' => null,
+        'placeholder' => null,
+        'defaultMessage' => null,
+        'buttonLabel' => null,
+        'sendLabel' => null,
     ],
     'snippets' => [
         'whatsapp-button' => __DIR__ . '/snippets/whatsapp-button.php'
+    ],
+    'translations' => [
+        'de' => require __DIR__ . '/translations/de.php',
+        'en' => require __DIR__ . '/translations/en.php',
+        'tr' => require __DIR__ . '/translations/tr.php'
     ]
 ]);
